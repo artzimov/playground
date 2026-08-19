@@ -1,0 +1,15 @@
+root {
+	--bg: #1a1b23; /* page */
+	--panel-bg: #262a3a; /* editor/output card */
+	--panel-border: #333750;
+	--text: #d6d9e2;
+	--muted: #6b7086; /* comments, gutter numbers */
+	--accent-pink: #ff79c6; /* keywords */
+	--accent-purple: #b39bff; /* numbers */
+	--accent-yellow: #e6d17a; /* strings */
+	--accent-blue: #82aaff; /* identifiers/functions */
+}
+
+body {
+	background-color: grey;
+}
