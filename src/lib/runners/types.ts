@@ -1,4 +1,5 @@
-export type Language = "typescript" | "python" | "c"
+export const Languages = ["typescript", "python", "c"]
+export type Language = typeof Languages[number]
 
 export type OutputChunk =
 	| { kind: "stdout" | "stderr"; text: string }

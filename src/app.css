@@ -1,4 +1,4 @@
-root {
+:root {
 	--bg: #1a1b23; /* page */
 	--panel-bg: #262a3a; /* editor/output card */
 	--panel-border: #333750;
@@ -10,6 +10,14 @@ root {
 	--accent-blue: #82aaff; /* identifiers/functions */
 }
 
+html,
 body {
-	background-color: grey;
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: system-ui, sans-serif;
 }
