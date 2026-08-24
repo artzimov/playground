@@ -17,7 +17,7 @@ body {
 }
 
 body {
-	background-color: var(--bg);
+	background-color: #1e1e1e;
 	color: var(--text);
 	font-family: system-ui, sans-serif;
 }

@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { activeLanguage } from '$lib/stores/store';
-	import { Languages } from '$lib/runners/types';
+	import type { Language } from '$lib/runners/types';
+
+	const langs: Language[] = ['typescript', 'python', 'c'];
 </script>
 
-<nav class="language-tabs">
-	{#each Languages as lang (lang)}
-		<button class:active={$activeLanguage === lang} onclick={() => activeLanguage.set(lang)}
-			>{lang}</button
-		>
+<nav class="lang-tabs">
+	{#each langs as lang (lang)}
+		<button class:active={$activeLanguage === lang} onclick={() => activeLanguage.set(lang)}>
+			{lang}
+		</button>
 	{/each}
 </nav>
 
 <style>
-	.language-tabs {
+	.lang-tabs {
 		display: flex;
-		gap: 0.5 rem;
+		gap: 0.5rem;
 	}
-
 	button {
 		background: transparent;
 		border: 1px solid var(--panel-border);
@@ -26,7 +27,6 @@
 		cursor: pointer;
 		font: inherit;
 	}
-
 	button.active {
 		color: var(--text);
 		border-color: var(--accent-blue);

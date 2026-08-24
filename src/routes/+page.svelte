@@ -4,7 +4,9 @@
 	import OutputPanel from '$lib/components/OutputPanel.svelte';
 	import { isRunning, runCurrent } from '$lib/stores/store';
 
-	function handleKeyDown(e: KeyboardEvent) {
+	let monacoRef: Monaco;
+
+	function handleKeydown(e: KeyboardEvent) {
 		if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
 			e.preventDefault();
 			runCurrent();
@@ -12,18 +14,21 @@
 	}
 </script>
 
-<svelte:window onkeydown={handleKeyDown} />
+<svelte:window onkeydown={handleKeydown} />
 
 <div class="app">
 	<header class="toolbar">
 		<Navigation />
-		<button class="run-btn" onclick={() => runCurrent()} disabled={$isRunning}>
-			{$isRunning ? 'Running...' : '▶ Run'}
-		</button>
+		<div class="actions">
+			<button class="clear-btn" onclick={() => monacoRef?.clearCurrent()}>Clear</button>
+			<button class="run-btn" onclick={() => runCurrent()} disabled={$isRunning}>
+				{$isRunning ? 'Running…' : '▶ Run'}
+			</button>
+		</div>
 	</header>
 
 	<main class="panes">
-		<div class="pane editor-pane"><Monaco /></div>
+		<div class="pane editor-pane"><Monaco bind:this={monacoRef} /></div>
 		<div class="divider"></div>
 		<div class="pane output-pane"><OutputPanel /></div>
 	</main>
@@ -43,6 +48,26 @@
 		padding: 0.75rem 1rem;
 		background: var(--panel-bg);
 		border-bottom: 1px solid var(--panel-border);
+	}
+
+	.actions {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.clear-btn {
+		background: transparent;
+		color: var(--muted);
+		border: 1px solid var(--panel-border);
+		border-radius: 6px;
+		padding: 0.5rem 1.1rem;
+		cursor: pointer;
+		font: inherit;
+	}
+
+	.clear-btn:hover {
+		color: var(--text);
+		border-color: var(--accent-blue);
 	}
 
 	.run-btn {

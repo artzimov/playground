@@ -2,40 +2,19 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { activeLanguage, codeByLanguage } from '$lib/stores/store';
-	import { type Language } from '$lib/runners/types';
-	import * as Monaco from 'monaco-editor';
+	import type { Language } from '$lib/runners/types';
+	import type * as Monaco from 'monaco-editor';
 
 	let container: HTMLDivElement;
 	let editor: Monaco.editor.IStandaloneCodeEditor;
 	let models: Partial<Record<Language, Monaco.editor.ITextModel>> = {};
 
-	const starter: Record<Language, string> = {
-		typescript: [
-			'function greet(name: string): string {',
-			'\treturn `Hello, ${name}!`;',
-			'}',
-			'',
-			'console.log(greet("world"));'
-		].join('\n'),
-		python: ['def greet(name):', '\treturn f"Hello, {name}!"', '', 'print(greet("world"))'].join(
-			'\n'
-		),
-		c: [
-			'#include <stdio.h>',
-			'',
-			'int main(void) {',
-			'\tprintf("Hello, world!\\n");',
-			'\treturn 0;',
-			'}'
-		].join('\n')
-	};
-
-	function toMonacoLanguageId(language: Language): string {
-		return language === 'c' ? 'cpp' : language;
+	function toMonacoLangId(lang: Language): string {
+		return lang === 'c' ? 'cpp' : lang;
 	}
 
 	onMount(async () => {
-		await import('$lib/monaco/setup');
+		await import('$lib/monaco/setup'); // must resolve before monaco.editor.create
 		const monaco = await import('monaco-editor');
 
 		monaco.editor.defineTheme('playground-dark', {
@@ -57,10 +36,8 @@
 		});
 
 		const initialCode = get(codeByLanguage);
-
 		(['typescript', 'python', 'c'] as Language[]).forEach((lang) => {
-			const value = initialCode[lang] || starter[lang];
-			models[lang] = monaco.editor.createModel(value, toMonacoLanguageId(lang));
+			models[lang] = monaco.editor.createModel(initialCode[lang], toMonacoLangId(lang));
 			models[lang]!.onDidChangeContent(() => {
 				codeByLanguage.update((c) => ({ ...c, [lang]: models[lang]!.getValue() }));
 			});
@@ -72,7 +49,7 @@
 			automaticLayout: true,
 			minimap: { enabled: false },
 			fontSize: 14,
-			fontFamily: "'FiraCode', monospace"
+			fontFamily: "'Fira Code', monospace"
 		});
 	});
 
@@ -81,6 +58,11 @@
 			editor.setModel(models[$activeLanguage]!);
 		}
 	});
+
+	export function clearCurrent() {
+		const lang = get(activeLanguage);
+		models[lang]?.setValue('');
+	}
 
 	onDestroy(() => {
 		editor?.dispose();

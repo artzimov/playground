@@ -27,11 +27,11 @@
 		"prettier-plugin-svelte": "^4.1.0",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
-		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.60.1",
 		"vite": "^8.0.16"
 	},
 	"dependencies": {
-		"monaco-editor": "^0.53.0"
+		"monaco-editor": "^0.53.0",
+		"typescript": "^6.0.3"
 	}
 }
