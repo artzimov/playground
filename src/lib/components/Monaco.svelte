@@ -28,8 +28,8 @@
 				{ token: 'identifier', foreground: '82aaff' }
 			],
 			colors: {
-				'editor.background': '#262a3a',
-				'editor.foreground': '#d6d9e2',
+				//'editor.background': '#262a3a',
+				//'editor.foreground': '#d6d9e2',
 				'editorLineNumber.foreground': '#484d63',
 				'editor.lineHighlightBackground': '#2c3040'
 			}
@@ -76,5 +76,6 @@
 	.editor-container {
 		width: 100%;
 		height: 100%;
+		background: var(--panel-bg);
 	}
 </style>

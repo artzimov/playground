@@ -18,19 +18,19 @@
 
 <div class="app">
 	<header class="toolbar">
-		<Navigation />
 		<div class="actions">
-			<button class="clear-btn" onclick={() => monacoRef?.clearCurrent()}>Clear</button>
 			<button class="run-btn" onclick={() => runCurrent()} disabled={$isRunning}>
 				{$isRunning ? 'Running…' : '▶ Run'}
 			</button>
+			<button class="clear-btn" onclick={() => monacoRef?.clearCurrent()}>Clear</button>
 		</div>
+		<Navigation />
 	</header>
 
 	<main class="panes">
-		<div class="pane editor-pane"><Monaco bind:this={monacoRef} /></div>
+		<div class="editor-pane"><Monaco bind:this={monacoRef} /></div>
 		<div class="divider"></div>
-		<div class="pane output-pane"><OutputPanel /></div>
+		<div class="output-pane"><OutputPanel /></div>
 	</main>
 </div>
 
@@ -46,7 +46,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 0.75rem 1rem;
-		background: var(--panel-bg);
+		/*background: var(--panel-bg);*/
 		border-bottom: 1px solid var(--panel-border);
 	}
 
@@ -89,10 +89,21 @@
 		flex: 1;
 		display: flex;
 		min-height: 0;
+		margin-left: 6rem;
+		margin-right: 6rem;
+		margin-top: 4rem;
+		margin-bottom: 4rem;
+		box-shadow: rgba(0, 0, 0, 0.25) 0px 9px 20px 9px;
 	}
 
-	.pane {
-		flex: 1 1 50%;
+	.editor-pane {
+		flex: 3 3 60%;
+		min-width: 0;
+		height: 100%;
+	}
+
+	.output-pane {
+		flex: 2 2 40%;
 		min-width: 0;
 		height: 100%;
 	}

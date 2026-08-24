@@ -1,8 +1,8 @@
 :root {
-	--bg: #1a1b23; /* page */
-	--panel-bg: #262a3a; /* editor/output card */
+	--bg: #1d1e26; /* page */
+	--panel-bg: #282a36; /* editor/output card */
 	--panel-border: #333750;
-	--text: #d6d9e2;
+	--text: #f8f8f2;
 	--muted: #6b7086; /* comments, gutter numbers */
 	--accent-pink: #ff79c6; /* keywords */
 	--accent-purple: #b39bff; /* numbers */
@@ -17,7 +17,7 @@ body {
 }
 
 body {
-	background-color: #1e1e1e;
+	background-color: var(--bg);
 	color: var(--text);
 	font-family: system-ui, sans-serif;
 }
