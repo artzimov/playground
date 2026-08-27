@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { get } from 'svelte/store';
 	import { activeLanguage, codeByLanguage } from '$lib/stores/store';
-	import type { Language } from '$lib/runners/types';
+	import { Languages, type Language } from '$lib/runners/types';
 	import type * as Monaco from 'monaco-editor';
 
 	let container: HTMLDivElement;
@@ -36,7 +36,7 @@
 		});
 
 		const initialCode = get(codeByLanguage);
-		(['typescript', 'python', 'c'] as Language[]).forEach((lang) => {
+		(Languages as Language[]).forEach((lang) => {
 			models[lang] = monaco.editor.createModel(initialCode[lang], toMonacoLangId(lang));
 			models[lang]!.onDidChangeContent(() => {
 				codeByLanguage.update((c) => ({ ...c, [lang]: models[lang]!.getValue() }));
@@ -54,8 +54,11 @@
 	});
 
 	$effect(() => {
-		if (editor && models[$activeLanguage]) {
-			editor.setModel(models[$activeLanguage]!);
+		const lang = $activeLanguage;
+		const model = models[lang];
+
+		if (editor && model) {
+			editor.setModel(model);
 		}
 	});
 
