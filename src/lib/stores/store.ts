@@ -1,3 +1,4 @@
+// src/lib/stores/store.ts
 import { type Language, type OutputChunk } from '$lib/runners/types';
 import { getRunner } from '$lib/runners';
 import { get, writable } from 'svelte/store';
@@ -12,6 +13,8 @@ export const codeByLanguage = writable<Record<Language, string>>({ ...starterCod
 export const output = writable<OutputChunk[]>([]);
 export const isRunning = writable(false);
 
+const outputByLanguage: Record<Language, OutputChunk[]> = { typescript: [], python: [], c: [] };
+
 let activeController: AbortController | undefined;
 
 export async function runCurrent() {
@@ -23,6 +26,12 @@ export async function runCurrent() {
     isRunning.set(true);
 
     const collected: OutputChunk[] = [];
+    const commit = () => {
+        outputByLanguage[lang] = collected;
+        if (get(activeLanguage) === lang) {
+            output.set([...collected]);
+        }
+    };
 
     try {
         const runner = await getRunner(lang);
@@ -32,17 +41,17 @@ export async function runCurrent() {
             (chunk) => {
                 if (controller.signal.aborted) return;
                 collected.push(chunk);
-                output.set([...collected]); // swap in one commit — no blank-then-refill flash
+                commit();
             },
             controller.signal
         );
         if (collected.length === 0 && !controller.signal.aborted) {
-            output.set([]); // confirmed genuinely empty — safe to clear now
+            commit();
         }
     } catch (err) {
         if (!controller.signal.aborted) {
             collected.push({ kind: 'error', text: `${lang} isn't wired up yet: ${(err as Error).message}` });
-            output.set([...collected]);
+            commit();
         }
     } finally {
         if (activeController === controller) {
@@ -56,11 +65,14 @@ let autorunTimer: ReturnType<typeof setTimeout> | undefined;
 
 function scheduleAutorun() {
     if (!browser) return;
-    if (get(activeLanguage) === 'c') return; // C only runs via the button
+    if (get(activeLanguage) === 'c') return;
 
     clearTimeout(autorunTimer);
     autorunTimer = setTimeout(runCurrent, AUTORUN_DEBOUNCE_MS);
 }
 
+activeLanguage.subscribe((lang) => {
+    output.set(outputByLanguage[lang]);
+    scheduleAutorun();
+});
 codeByLanguage.subscribe(scheduleAutorun);
-activeLanguage.subscribe(scheduleAutorun);
