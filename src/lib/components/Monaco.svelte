@@ -14,7 +14,7 @@
 	}
 
 	onMount(async () => {
-		await import('$lib/monaco/setup'); // must resolve before monaco.editor.create
+		await import('$lib/monaco/setup');
 		const monaco = await import('monaco-editor');
 
 		monaco.editor.defineTheme('playground-dark', {
