@@ -38,7 +38,8 @@
 
 <style>
 	.sidebar {
-		width: 56px;
+		box-sizing: border-box;
+		width: var(--sidebar-width);
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;

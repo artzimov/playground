@@ -19,11 +19,13 @@
 
 <div class="app">
 	<header class="toolbar">
-		<img alt="" src={logo} height="40" width="40" />
+		<div class="logo-container"><img alt="" src={logo} height="40" width="40" /></div>
 	</header>
 
 	<main class="panes">
-		<Sidebar onClear={() => monacoRef?.clearCurrent()} onRun={() => runCurrent()} />
+		<div class="sidebar-pane">
+			<Sidebar onClear={() => monacoRef?.clearCurrent()} onRun={() => runCurrent()} />
+		</div>
 		<div class="editor-pane"><Monaco bind:this={monacoRef} /></div>
 		<div class="divider"></div>
 		<div class="output-pane"><OutputPanel /></div>
@@ -41,9 +43,15 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0.75rem 1rem;
+		padding: 0.75rem 6rem;
 		/*background: var(--panel-bg);*/
 		border-bottom: 1px solid var(--panel-border);
+	}
+
+	.logo-container {
+		display: flex;
+		justify-content: center;
+		width: var(--sidebar-width);
 	}
 
 	.panes {
@@ -55,6 +63,10 @@
 		margin-top: 4rem;
 		margin-bottom: 4rem;
 		box-shadow: rgba(0, 0, 0, 0.25) 0px 9px 20px 9px;
+	}
+
+	.sidebar-pane {
+		height: 100%;
 	}
 
 	.editor-pane {

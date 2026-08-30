@@ -8,6 +8,7 @@
 	--accent-purple: #b39bff; /* numbers */
 	--accent-yellow: #e6d17a; /* strings */
 	--accent-blue: #82aaff; /* identifiers/functions */
+	--sidebar-width: 56px;
 }
 
 html,
